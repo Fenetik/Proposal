@@ -1,0 +1,220 @@
+% Copyright (C) 2014-2019 by Thomas Auzinger <thomas@auzinger.name>
+
+\documentclass[draft,final,openany,oneside]{vutinfth} % Remove option 'final' to obtain debug information.
+
+% Load packages to allow in- and output of non-ASCII characters.
+\usepackage{lmodern}        % Use an extension of the original Computer Modern font to minimize the use of bitmapped letters.
+\usepackage[T1]{fontenc}    % Determines font encoding of the output. Font packages have to be included before this line.
+\usepackage[utf8]{inputenc} % Determines encoding of the input. All input files have to use UTF8 encoding.
+
+% Extended LaTeX functionality is enables by including packages with \usepackage{...}.
+\usepackage{amsmath}    % Extended typesetting of mathematical expression.
+\usepackage{amssymb}    % Provides a multitude of mathematical symbols.
+\usepackage{mathtools}  % Further extensions of mathematical typesetting.
+\usepackage{microtype}  % Small-scale typographic enhancements.
+\usepackage[inline]{enumitem} % User control over the layout of lists (itemize, enumerate, description).
+\usepackage{multirow}   % Allows table elements to span several rows.
+\usepackage{booktabs}   % Improves the typesettings of tables.
+\usepackage{subcaption} % Allows the use of subfigures and enables their referencing.
+\usepackage[ruled,linesnumbered,algochapter]{algorithm2e} % Enables the writing of pseudo code.
+\usepackage[usenames,dvipsnames,table]{xcolor} % Allows the definition and use of colors. This package has to be included before tikz.
+\usepackage{nag}       % Issues warnings when best practices in writing LaTeX documents are violated.
+\usepackage{todonotes} % Provides tooltip-like todo notes.
+\usepackage{hyperref}  % Enables cross linking in the electronic document version. This package has to be included second to last.
+\usepackage[acronym,toc]{glossaries} % Enables the generation of glossaries and lists fo acronyms. This package has to be included last.
+
+% Define convenience functions to use the author name and the thesis title in the PDF document properties.
+\newcommand{\authorname}{Lukas Frank} % The author name without titles.
+\newcommand{\thesistitle}{Bringing Eventlets to the Fog} % The title of the thesis. The English version should be used, if it exists.
+
+% Set PDF document properties
+\hypersetup{
+    pdfpagelayout   = TwoPageRight,           % How the document is shown in PDF viewers (optional).
+    linkbordercolor = {Melon},                % The color of the borders of boxes around crosslinks (optional).
+    pdfauthor       = {\authorname},          % The author's name in the document properties (optional).
+    pdftitle        = {\thesistitle},         % The document's title in the document properties (optional).
+    pdfsubject      = {Subject},              % The document's subject in the document properties (optional).
+    pdfkeywords     = {a, list, of, keywords} % The document's keywords in the document properties (optional).
+}
+
+\setpnumwidth{2.5em}        % Avoid overfull hboxes in the table of contents (see memoir manual).
+\setsecnumdepth{subsection} % Enumerate subsections.
+
+\nonzeroparskip             % Create space between paragraphs (optional).
+\setlength{\parindent}{0pt} % Remove paragraph identation (optional).
+
+\makeindex      % Use an optional index.
+\makeglossaries % Use an optional glossary.
+%\glstocfalse   % Remove the glossaries from the table of contents.
+
+% Set persons with 4 arguments:
+%  {title before name}{name}{title after name}{gender}
+%  where both titles are optional (i.e. can be given as empty brackets {}).
+\setauthor{}{\authorname}{BSc}{male}
+\setadvisor{Ass.Prof. Dr.-Ing.}{Stefan Schulte}{}{male}
+
+
+% For dissertations:
+\setfirstreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
+\setsecondreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
+
+% For dissertations at the PhD School and optionally for dissertations:
+\setsecondadvisor{Pretitle}{Forename Surname}{Posttitle}{male} % Comment to remove.
+
+% Required data.
+\setregnumber{01325904}
+\setdate{29}{03}{2019} % Set date with 3 arguments: {day}{month}{year}.
+\settitle{\thesistitle}{\thesistitle} % Sets English and German version of the title (both can be English or German). If your title contains commas, enclose it with additional curvy brackets (i.e., {{your title}}) or define it as a macro as done with \thesistitle.
+%\setsubtitle{Optional Subtitle of the Thesis}{Optionaler Untertitel der Arbeit} % Sets English and German version of the subtitle (both can be English or German).
+
+% Select the thesis type: bachelor / master / doctor / phd-school.
+% Bachelor:
+%\setthesis{bachelor}
+%
+% Master:
+\setthesis{master}
+\setmasterdegree{dipl.} % dipl. / rer.nat. / rer.soc.oec. / master
+%
+% Doctor:
+%\setthesis{doctor}
+%\setdoctordegree{rer.soc.oec.}% rer.nat. / techn. / rer.soc.oec.
+%
+% Doctor at the PhD School
+%\setthesis{phd-school} % Deactivate non-English title pages (see below)
+
+% For bachelor and master:
+\setcurriculum{Curriculum: Business Informatics}{Curriculum: Business Informatics} % Sets the English and German name of the curriculum.
+
+% For dissertations at the PhD School:
+\setfirstreviewerdata{Affiliation, Country}
+\setsecondreviewerdata{Affiliation, Country}
+
+
+\begin{document}
+
+\frontmatter % Switches to roman numbering.
+% The structure of the thesis has to conform to
+%  http://www.informatik.tuwien.ac.at/dekanat
+
+%\addtitlepage{naustrian} % German title page (not for dissertations at the PhD School).
+{\let\cleardoublepage\clearpage 
+\addtitlepage{english} % English title page.
+
+
+% Select the language of the thesis, e.g., english or naustrian.
+\selectlanguage{english}
+
+% Add a table of contents (toc).
+%\tableofcontents % Starred version, i.e., \tableofcontents*, removes the self-entry.
+
+% Switch to arabic numbering and start the enumeration of chapters in the table of content.
+\mainmatter
+}
+
+\chapter{1  Motivation}
+\setcounter{chapter}{1}
+
+In recent years, Cloud computing has emerged and advanced rapidly, so has the Internet of Things (IoT). The IoT is responsible for the rapid growth of connected devices. In 2014 the estimate of connected devices placed around three to four billion.\cite{IoTandAnalytics} This number is believed to grow to fifty billion by 2020.\cite{FindingYourWay} \newline
+The IoT comes with non trivial challenges and the cloud computing paradigm is not able to handle them all.
+When using the cloud computing paradigm, generated data or events will be forwarded to a data center inside the core network for further processing. The result will then be sent back to the end user. \cite{ASurveyOfFogComputing} This process takes a lot of bandwidth and is furthermore associated with high latency, when considering an IoT scenario with many data sources.
+Reacting to events coming from IoT devices may require latencies below split seconds. This requirement cannot be achieved with a mainstream cloud service. \cite{OverviewReasearchOp}  This fact limits the usefulness of the cloud paradigm in certain event processing scenarios. \newline
+Another challenge for the cloud computing paradigm is the sheer amount of data generated and forwarded from IoT devices to the cloud. There have been a lot of studies which investigate the data generated by IoT. It can be seen that the bottleneck of the future will not be the computational power, but the network bandwidth. The generated data will overcome the capabilities of the networks which makes a different approach necessary. \cite{FindingYourWay} \cite{FogComputingPrinciples} \newline
+One example which emphasises this issues is an eHealth scenario, where EKG measures need to be analyzed. Such an EKG device can generate several Gigabytes of time-series data within a day. When considering a few hundred patients from a hospital, it is not feasible to send these huge amounts of data to the cloud for processing purposes. \cite{FogDrivenEHealth} \newline
+These sheer amounts of data could lead to a bottleneck, which may further increase the latency. This would make the cloud approach even worse in some IoT scenarios. \newline
+
+The fog computing paradigm is a promising extension to the cloud environment, to overcome this issue. As Fog computing is implemented at the edge of the network, it provides low latency, location awareness, and improves quality-of-services (QoS) for several applications. \cite{FogSecurityIssues}  \newline Therefore, a federation of fog and cloud could be able to handle these amounts of data. Data acquisition, aggregation and preprocessing could be handled by fog nodes. Preprocessing or trimming of data before forwarding it to the cloud reduces the needed amount of data to be transported, but also the storage in the cloud which helps to cope with the issue of data center congestion. \cite{FogComputingPrinciples} \newline
+In case of a large scale health monitoring system, fog nodes can be used to collect data generated by IoT devices, analyze local and regional data, aggregate it and provide real-time feedback especially for emergency events. \newline
+The preprocessed data is then forwarded to the cloud for thorough computational-intensive analysis. \cite{ASurveyOfFogComputing} Since health data can be quite sensitive fog computing also helps preserving privacy, because instead of sending the data to a few centralized services, it is kept 'inside the network'. \cite{FindingYourWay}   
+
+
+\chapter{2  Aim of the work}
+
+There has been extensive research on the topic of event processing in the cloud but the requirement for low latency in critical systems like real time event processing applications cannot be satisfied by the cloud paradigm. \cite{FogComputingPrinciples}
+
+However,  there is no solution which combines the fog computing paradigm with the (pre-) processing of events at the edge of the network. \todo{Kann man das so schreiben? Stimmt ja eigentlich nicht}
+Therefore, the aim of this thesis is to bring the event processing framework "Eventlet" \cite{Appel2012} which is originally designed for the cloud paradigm into the fog, to evaluate, whether an event processing application can be implemented in the fog and if the solution provides better performance than cloud based solutions. \newline
+
+To evaluate the fog environment a scenario around health monitoring will be implemented. Pulse rate data will be collected and processed. In case of an emergency actions should take place in real time. The results of this evaluation will be compared with a corresponding cloud solution. 
+
+In the course of this evaluation, two research question will be answered:
+\begin{enumerate}
+    \item Is it feasible to implement event processing in the fog? If so, is it better than in a cloud environment? (latency, data throughput, privacy, costs)
+    \item To which extend is it possible to bring Eventlets to the fog?
+\end{enumerate}
+
+\newpage
+ 
+\chapter{3 Methodological approach}
+
+This thesis will follow the design science methodology for information systems research. Following the guidelines of design science, an artifact will be produced which follows design which will be continuously improved during the process of development.\cite{DesignScience} \newline  
+The process is outlined in the following list, which also shows the structure of this master thesis.
+
+\begin{itemize}
+  \item Requirements analysis \newline
+  A requirements analysis will be conducted following the principles from the work \cite{RequirementsEngineering}.  The needs of the different stakeholders in such a complex and distributed environment shall be evaluated. Their needs may vary or even conflict, which could lead to the situation where not every need can be satisfied. The goal is to satisfy as many identified needs as possible.  
+  
+  \item Architecture design \newline
+  The next step will be to evaluate which parts of the Eventlet framework \cite{Appel2012} will be needed in the Fog environment and which parts can be ignored to keep the architecture as simple as possible. The reasoning behind this is that the fog nodes are restricted in computational power and therefore the overhead should be kept as low as possible. \todo{Ist das OK so zu schreiben?} \newline
+Then the architecture design will take place. The middleware will be the crucial point in this step, since it is responsible for the coordination between the fog nodes and the cloud which is a challenging task. \cite{Appel2012} This design will be evaluated and continuously improved.
+  
+  \item Implementation phase \newline
+  The implementation phase includes the integration of the sensor data sources, the implementation of the data prepocessing logic on the fog nodes, and the coordination and communication between the different components.
+  
+  \item Evaluation phase \newline
+  To be able to compare the fog solution to the cloud solution, a corresponding cloud infrastructure is simulated. Data about the needed network traffic for each of these systems has to be gathered and analyzed. Also, privacy measures are taken into account during this process. Furthermore, the costs of such systems shall be compared. 
+  \begin{itemize}
+      \item Data throughput
+      \item latency 
+      \item costs 
+      \item privacy
+  \end{itemize}
+\end{itemize}
+
+\chapter{4  State-of-the-art}
+
+Fog computing and event processing are well studied areas, but there has not been much work in the combination of those, in the sense of preprocessing data streams on fog nodes. 
+
+The works \cite{DSP2018} \cite{DSP2015} are studying the idea of Decentralized Data Stream Processing. They want to bring processing power closer to the origin of data. The focus of their studies are, in which way the processing nodes can self adapt themselves in the sense of load balancing, scaling and migration to meet Quality-of-Service (QoS) requirements. \cite{DSP2018} proposes a two layered architecture, where distributed nodes use a local policy to control the adaption and on the higher level a centralized component oversees the overall application performance. \todo{Wie von diesem Paper abgrenzen?} \newline
+
+Alam et al. \cite{Alam2010} present a virtualization framework which uses an adapter oriented approach to tackle the challenge of the connection with various types of different sensor nodes. They use access policies to ensure that only authorized entities are able to access the services. They use the event driven service oriented architecture (e-SOA) paradigm to monitor events generated by various IoT sensors. However, they are using their fog nodes to ensure connectivity, security and for monitoring purposes, but not for data preprocessing.
+
+
+Appel et al. \cite{Appel2012} present Eventlets, a modular design for event stream processing. These Eventlets are containers for application logic with a managed livecycle.
+In comparison to SOA approaches, which are pull-based, events are pushed into the components and therefore this architecture can be seen as push-based. 
+Upon arrival of a matching event, they are activated and react accordingly. The management of the Eventlets livecycles are handled by a central middleware. The design enables easy distribution across multiple Fog nodes, which is necessary for the scalability of such a system.
+Furthermore Eventlets can be used to process sensitive patient data, since Eventlets are independent from each other and are therefore independent from each other, which makes it possible to assign security policies per instance. \newline
+However, this concept has not yet been implemented in a fog environment even though the easy to deploy and manageable containers make it a promising architecture for it.   
+
+
+\chapter {5 Relevance to the curriculum of Business Informatics}
+
+The topics touched by this thesis are strongly interconnected with the curriculum of Business Informatics. The relevance to the field is shown in the list below where lectures of the curriculum can be seen. These lectures teach most of the theoretical knowledge used in this thesis.  
+
+\textbf{184.781} Internet of Things for Smart Systems 
+
+\textbf{184.237} Distributed Systems
+
+\backmatter
+
+% Use an optional list of figures.
+%\listoffigures % Starred version, i.e., \listoffigures*, removes the toc entry.
+
+% Use an optional list of tables.
+%\clearpage % Start list of tables on the next empty right hand page.
+%\listoftables % Starred version, i.e., \listoftables*, removes the toc entry.
+
+% Use an optional list of alogrithms.
+%\listofalgorithms
+%\addcontentsline{toc}{chapter}{List of Algorithms}
+
+% Add an index.
+\printindex
+
+% Add a glossary.
+%\printglossaries
+
+% Add a bibliography.
+\bibliographystyle{alpha}
+\bibliography{intro}
+
+\end{document}
